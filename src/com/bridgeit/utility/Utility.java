@@ -9,6 +9,7 @@
 package com.bridgeit.utility;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -242,4 +243,98 @@ public class Utility {
 			// TODO: handle exception
 		}
 	}
+
+	public void displayPrepared(String databaseName) {
+		try {
+			connection = DataBaseConnection.getConnection(databaseName);
+			String query = "select * from data";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			ResultSet result = preparedStatement.executeQuery();
+			while(result.next()) {
+				Info info = new Info();
+				info.setId(result.getInt("id"));
+				info.setFirstName(result.getString("firstName"));
+				info.setLastName(result.getString("lastName"));
+				info.setGender(result.getString("gender"));
+				info.setMaritalStatus(result.getString("maritalStatus"));
+				System.out.println(info);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void insertPrepared(Info info, String databaseName) {
+		try {
+			connection = DataBaseConnection.getConnection(databaseName);
+			String query = "insert into data values(?,?,?,?,?)";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, info.getId());
+			preparedStatement.setString(2, info.getFirstName());
+			preparedStatement.setString(3, info.getLastName());
+			preparedStatement.setString(4, info.getGender());
+			preparedStatement.setString(5, info.getMaritalStatus());
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void deletePrepared(String databaseName) {
+		try {
+			displayPrepared(databaseName);
+			System.out.println("Enter the id you want to delete");
+			int id = inputInteger();
+			String query = "delete from data where id = ?";
+			connection = DataBaseConnection.getConnection(databaseName);
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, id);
+			preparedStatement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void updatePrepared(String databaseName) {
+		try {
+			displayPrepared(databaseName);
+			System.out.println("Enter the id you want to update");
+			int id = inputInteger();
+			System.out.println("1. Update first name\n"
+					+ "2. Update last name\n"
+					+ "3. Update marital status\n");
+			int choice = inputInteger();
+			String updateAttribute="";
+			String updateData="";
+			switch(choice) {
+			case 1:
+				System.out.println("Enter the new first name");
+				updateData = inputString();
+				updateAttribute = "firstName";
+				break;
+			case 2:
+				System.out.println("Enter the new last name");
+				updateData = inputString();
+				updateAttribute = "lastName";
+				break;
+			case 3:
+				System.out.println("Enter the new marital status");
+				updateData = inputString();
+				updateAttribute = "maritalStatus";
+				break;
+			default:
+				break;
+			}
+			String query="update data set "+updateAttribute+" = ? where id = ?";
+			connection = DataBaseConnection.getConnection(databaseName);
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, updateData);
+			preparedStatement.setInt(2, id);
+			preparedStatement.execute();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	
 }
