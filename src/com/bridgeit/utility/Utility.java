@@ -155,7 +155,7 @@ public class Utility {
 			int choiceUpdate = inputInteger();
 			switch (choiceUpdate) {
 			case 1:
-				System.out.println("Enter the new last name to be updated");
+				System.out.println("Enter the new first name to be updated");
 				String firstName = inputString();
 				query = "update data set firstName = '"+firstName+"' where id = "+id;
 				break;

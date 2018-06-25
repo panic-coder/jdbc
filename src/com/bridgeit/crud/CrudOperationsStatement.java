@@ -10,7 +10,7 @@ package com.bridgeit.crud;
 import com.bridgeit.model.Info;
 import com.bridgeit.utility.Utility;
 
-public class CrudOperations {
+public class CrudOperationsStatement {
 	public static void main(String[] args) {
 		Utility utility = new Utility();
 		
