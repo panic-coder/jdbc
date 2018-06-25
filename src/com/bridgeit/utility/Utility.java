@@ -144,11 +144,41 @@ public class Utility {
 				info.setMaritalStatus(result.getString("maritalStatus"));
 				System.out.println(info);
 			}
+			int loopUpdate = 0;
+			while(loopUpdate==0) {
 			System.out.println("Enter the id to update");
 			int id = inputInteger();
-			System.out.println("Enter the name to be updated");
-			String name = inputString();
-			query = "update data set name = "+name+" where id = "+id;
+			System.out.println("1. Update first name\n"
+					+ "2. Update last name\n"
+					+ "3. Update marital status\n"
+					+ "4. Close menu");
+			int choiceUpdate = inputInteger();
+			switch (choiceUpdate) {
+			case 1:
+				System.out.println("Enter the new last name to be updated");
+				String firstName = inputString();
+				query = "update data set firstName = '"+firstName+"' where id = "+id;
+				break;
+			case 2:
+				System.out.println("Enter the name to be updated");
+				String lastName = inputString();
+				query = "update data set lastName = '"+lastName+"' where id = "+id;
+				break;
+			case 3:
+				System.out.println("Enter the name to be updated");
+				String status = inputString();
+				query = "update data set maritalStatus = '"+status+"' where id = "+id;
+				break;
+			case 4:
+				loopUpdate=1;
+				System.out.println("Update menu closed");
+				break;
+			default:
+				loopUpdate=1;
+				System.out.println("Wrong choice");
+				break;
+			}
+			}
 			statement.executeUpdate(query);
 			query = "select * from data";
 			ResultSet result2 = statement.executeQuery(query);
@@ -165,5 +195,51 @@ public class Utility {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public void delete(String databaseName) {
+		try {
+			connection = DataBaseConnection.getConnection(databaseName);
+			statement = connection.createStatement();
+			String query;
+			query = "select * from data";
+			ResultSet result = statement.executeQuery(query);
+			while(result.next()) {
+				Info info = new Info();
+				info.setId(result.getInt("id"));
+				info.setFirstName(result.getString("firstName"));
+				info.setLastName(result.getString("lastName"));
+				info.setGender(result.getString("gender"));
+				info.setMaritalStatus(result.getString("maritalStatus"));
+				System.out.println(info);
+			}
+			System.out.println("Enter the id you want to delete");
+			int id = inputInteger();
+			query = "delete from data where id = "+id;
+			statement.executeUpdate(query);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public void display(String databaseName) {
+		try {
+			connection = DataBaseConnection.getConnection(databaseName);
+			statement = connection.createStatement();
+			String query;
+			query = "select * from data";
+			ResultSet result = statement.executeQuery(query);
+			while(result.next()) {
+				Info info = new Info();
+				info.setId(result.getInt("id"));
+				info.setFirstName(result.getString("firstName"));
+				info.setLastName(result.getString("lastName"));
+				info.setGender(result.getString("gender"));
+				info.setMaritalStatus(result.getString("maritalStatus"));
+				System.out.println(info);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }

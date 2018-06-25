@@ -46,13 +46,17 @@ public class CrudOperations {
 					case 2:
 						int loopUpdates=0;
 						while(loopUpdates==0) {
-							System.out.println("1. Insert\n"
-									+ "2. Delete\n"
-									+ "3. Update\n"
-									+ "4. Close");
+							System.out.println("1. Display\n"
+									+ "2. Insert\n"
+									+ "3. Delete\n"
+									+ "4. Update\n"
+									+ "5. Close");
 							int choiceUpdates = utility.inputInteger();
 							switch(choiceUpdates) {
 							case 1:
+								utility.display(databaseName);
+								break;
+							case 2:
 								Info info = new Info();
 								System.out.println("Enter id");
 								info.setId(utility.inputInteger());
@@ -66,14 +70,19 @@ public class CrudOperations {
 								info.setMaritalStatus(utility.inputString());;
 								utility.insert(info,databaseName);
 								break;
-							case 2:
-								break;
 							case 3:
-								utility.update(databaseName);
+								utility.delete(databaseName);
 								break;
 							case 4:
+								utility.update(databaseName);
+								break;
+							case 5:
+								loopUpdates=1;
+								System.out.println("Menu Closed");
 								break;
 							default:
+								loopUpdates=1;
+								System.out.println("Wrong choice");
 								break;
 							}
 						}
